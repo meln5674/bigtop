@@ -747,6 +747,16 @@ def genTasks = { target ->
   }
   task "$target-relnotes" (description: "Preparing release notes for $target. No yet implemented!!!", group: PACKAGES_GROUP) doLast {
   }
+  task "$target-src-clean" (dependsOn: "${target}_vardefines",
+      description: "Removing $target component source directory",
+      group: PACKAGES_GROUP) doLast {
+    def final PKG_NAME = config.bigtop.components[target].pkg
+    def final PKG_VERSION = config.bigtop.components[target].version.pkg
+    def final PKG_OUTPUT_DIR = config.bigtop.components[target].outputdir
+    def final srcdir = "$PKG_OUTPUT_DIR/$PKG_NAME-$PKG_VERSION"
+    
+    safeDelete(srcdir)
+  }
   task "$target-clean" (dependsOn: "${target}_vardefines",
       description: "Removing $target component build and output directories",
       group: PACKAGES_GROUP) doLast {
